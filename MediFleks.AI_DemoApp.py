@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import requests
 
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import LabelEncoder, StandardScaler
@@ -24,7 +25,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Load the dataset from GitHub
-url = 'https://github.com/BDCIMERIGit/MediFleks.AI.Demo/blob/main/dataset_epilepsi_anak.xlsx'  # Update this with the actual URL
+url = 'https://raw.githubusercontent.com/BDCIMERIGit/MediFleks.AI.Demo/blob/main/dataset_epilepsi_anak.xlsx'  # Update this with the actual URL
 response = requests.get(url)
 with open('dataset_epilepsi_anak.xlsx', 'wb') as f:
     f.write(response.content)
@@ -188,7 +189,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Load the dataset from GitHub
-url = 'https://github.com/BDCIMERIGit/MediFleks.AI.Demo/blob/main/dummy_diabetes_8000.xlsx'  # Update this with the actual URL
+url = 'https://raw.githubusercontent.com/BDCIMERIGit/MediFleks.AI.Demo/blob/main/dummy_diabetes_8000.xlsx'  # Update this with the actual URL
 response = requests.get(url)
 with open('dataset_epilepsi_anak.xlsx', 'wb') as f:
     f.write(response.content)
@@ -342,7 +343,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 import joblib
 
 # Load the dataset from GitHub
-url = 'https://github.com/BDCIMERIGit/MediFleks.AI.Demo/blob/main/heart.csv'  # Update this with the actual URL
+url = 'https://raw.githubusercontent.com/BDCIMERIGit/MediFleks.AI.Demo/blob/main/heart.csv'  # Update this with the actual URL
 response = requests.get(url)
 with open('dataset_epilepsi_anak.xlsx', 'wb') as f:
     f.write(response.content)
