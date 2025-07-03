@@ -13,12 +13,12 @@ from sklearn.metrics import classification_report, confusion_matrix, roc_auc_sco
 from sklearn.pipeline import Pipeline
 
 # Models
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
+#from sklearn.linear_model import LogisticRegression
+#from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
+#from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
-from xgboost import XGBClassifier
+#from xgboost import XGBClassifier
 
 # Utils
 from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay
@@ -267,23 +267,22 @@ def choose_disease():
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             margin-top: 30px;
         }
         .diagnosis-option {
-            background-color: #ffffff;
-            padding: 15px 30px;
-            border-radius: 12px;
-            width: 300px;
             text-align: center;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            padding: 15px 25px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            width: 280px;
         }
         .diagnosis-option h4 {
             font-size: 18px;
-            color: #00bf63;
+            color: white;
             margin-bottom: 10px;
         }
-        .diagnosis-option button {
+        .stButton > button {
             width: 100%;
         }
         </style>
@@ -291,29 +290,34 @@ def choose_disease():
         unsafe_allow_html=True
     )
 
-    # Start wrapper div
+    # Wrapper start
     st.markdown('<div class="center-options">', unsafe_allow_html=True)
 
-    # List of diagnosis options
-    options = [
-        ("🧠 Epilepsi", "epilepsi"),
-        ("💉 Diabetes", "diabetes"),
-        ("❤️ Serangan Jantung", "jantung"),
-        ("🧠 Tumor Otak", "tumor"),
-        ("🎗️ Kanker Payudara", "kanker")
-    ]
-
-    for label, key in options:
+    # Diagnosis Items
+    def diagnosis_block(label, key, action):
         st.markdown(f'<div class="diagnosis-option"><h4>{label}</h4>', unsafe_allow_html=True)
         if st.button(f"Start {label}", key=key):
-            if key == "tumor" or key == "kanker":
-                st.warning("Work in progress...")
-            else:
-                st.session_state.page = key
+            action()
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # End wrapper div
+    # Epilepsi
+    diagnosis_block("🧠 Epilepsi", "epilepsi", lambda: st.session_state.update({"page": "epilepsi"}))
+
+    # Diabetes
+    diagnosis_block("💉 Diabetes", "diabetes", lambda: st.session_state.update({"page": "diabetes"}))
+
+    # Jantung
+    diagnosis_block("❤️ Serangan Jantung", "jantung", lambda: st.session_state.update({"page": "jantung"}))
+
+    # Tumor Otak
+    diagnosis_block("🧠 Tumor Otak", "tumor", lambda: st.warning("Work in progress..."))
+
+    # Kanker Payudara
+    diagnosis_block("🎗️ Kanker Payudara", "kanker", lambda: st.warning("Work in progress..."))
+
+    # Wrapper end
     st.markdown('</div>', unsafe_allow_html=True)
+
 
 def diagnose_epilepsi():
     st.title("⚡Diagnosa Epilepsi")
