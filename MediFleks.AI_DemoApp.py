@@ -286,6 +286,7 @@ def choose_disease():
             justify-content: center;
             align-items: center;
             gap: 8px;
+            width: 280px;
         }
         .stButton > button {
             width: 100%;
@@ -301,7 +302,7 @@ def choose_disease():
     # Helper
     def diagnosis_block(label, key, action):
         st.markdown(f'<div class="diagnosis-option"><h4>{label}</h4>', unsafe_allow_html=True)
-        if st.button(f"Mulai Diagnosa {label}", key=key):
+        if st.button(f"Mulai Diagnosa", key=key):
             action()
         st.markdown('</div>', unsafe_allow_html=True)
 
