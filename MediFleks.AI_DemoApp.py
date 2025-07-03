@@ -166,7 +166,7 @@ model_epilepsi = joblib.load("ModelDiagnosaEpilepsi.pkl")
 model_diabetes = joblib.load("ModelDiagnosaDiabetes.pkl")
 model_jantung = joblib.load("ModelDiagnosaSeranganJantung.pkl")
 
-# Manual encoding mapping untuk fitur epilepsi
+# Mapping encoding epilepsi input
 label_mapping = {
     'Jenis_Kelamin': {'Laki-laki': 1, 'Perempuan': 0},
     'Jumlah_Obat': {1: 0, 2: 1, 3: 2},
@@ -181,6 +181,13 @@ label_mapping = {
         'Abnormal non-epileptogenik': 1
     },
     'Penurunan_Frekuensi_Kejang': {'Ya': 1, 'Tidak': 0}
+}
+
+# Mapping hasil prediksi
+epilepsi_labels = {
+    0: "Epilepsi Fokal",
+    1: "Epilepsi Umum",
+    2: "Sindrom Epilepsi"
 }
 
 
