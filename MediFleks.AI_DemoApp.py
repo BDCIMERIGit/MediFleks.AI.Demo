@@ -282,7 +282,7 @@ def choose_disease():
         .diagnosis-option h4 {
             text-align: center;
             font-size: 18px;
-            color: green;
+            color: black;
             margin-bottom: 15px;
             display: flex;
             justify-content: center;
