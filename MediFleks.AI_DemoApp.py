@@ -25,7 +25,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Load the dataset from GitHub
-url = 'https://raw.githubusercontent.com/BDCIMERIGit/MediFleks.AI.Demo/main/dataset_epilepsi_anak.xlsx'  # Update this with the actual URL
+url = 'https://raw.githubusercontent.com/BDCIMERIGit/MediFleks.AI.Demo/main/dataset_epilepsi_anak.xlsx'
 response = requests.get(url)
 with open('dataset_epilepsi_anak.xlsx', 'wb') as f:
     f.write(response.content)
@@ -33,19 +33,15 @@ with open('dataset_epilepsi_anak.xlsx', 'wb') as f:
 # Load the dataset
 df = pd.read_excel("dataset_epilepsi_anak.xlsx")
 
-df.info()
-
 # Encode label dan kategorikal
 le = LabelEncoder()
 for col in ['Jenis_Kelamin', 'Jumlah_Obat', 'Hasil_EEG', 'Hasil_MRI_Kepala', 'Penurunan_Frekuensi_Kejang']:
     df[col] = le.fit_transform(df[col])
 
-# Target encoding
 df['Jenis_Epilepsi'] = le.fit_transform(df['Jenis_Epilepsi'])
-target_mapping = dict(zip(le.classes_, le.transform(le.classes_)))
 
-# Split into features (X) and target (y)
-X = df.drop(columns=['Jenis_Epilepsi'])  # Assuming 'target' is the label column
+# Split into features and target
+X = df.drop(columns=['Jenis_Epilepsi'])
 y = df['Jenis_Epilepsi']
 
 # Train-test split
@@ -56,154 +52,29 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-def train_model(model, params, model_name):
-    grid = GridSearchCV(model, params, cv=5, scoring='accuracy', n_jobs=-1)
-    grid.fit(X_train_scaled, y_train)
-    print(f"Best Parameters for {model_name}:", grid.best_params_)
-    return grid.best_estimator_
+# Train Decision Tree only
+model = DecisionTreeClassifier()
+params = {'max_depth': [3, 5, 10]}
+grid = GridSearchCV(model, params, cv=5, scoring='accuracy', n_jobs=-1)
+grid.fit(X_train_scaled, y_train)
+final_model = grid.best_estimator_
 
-models = {
-    #"LogisticRegression": (LogisticRegression(max_iter=1000), {'C': [0.1, 1, 10]}),
-    #"KNN": (KNeighborsClassifier(), {'n_neighbors': [3, 5, 7]}),
-    "DecisionTree": (DecisionTreeClassifier(), {'max_depth': [3, 5, 10]}),
-    #"RandomForest": (RandomForestClassifier(), {'n_estimators': [50, 100], 'max_depth': [5, 10]}),
-    #"SVM": (SVC(probability=True), {'C': [0.1, 1, 10], 'kernel': ['linear', 'rbf']}),
-    "XGBoost": (XGBClassifier(eval_metric='mlogloss'), {'n_estimators': [50, 100], 'max_depth': [3, 5]})
-}
-
-trained_models = {}
-for name, (model, params) in models.items():
-    print(f"\nTraining {name}...")
-    trained_models[name] = train_model(model, params, name)
-    
-def evaluate_model(model, model_name):
-    y_pred = model.predict(X_test_scaled)
-    y_proba = model.predict_proba(X_test_scaled)
-
-    print(f"\nClassification Report for {model_name}:\n")
-    print(classification_report(y_test, y_pred, target_names=target_mapping.keys()))
-
-    # Confusion matrix
-    cm = confusion_matrix(y_test, y_pred)
-    disp = ConfusionMatrixDisplay(cm, display_labels=target_mapping.keys())
-    disp.plot(cmap='Blues')
-    plt.title(f"Confusion Matrix - {model_name}")
-    plt.show()
-
-    # ROC Curve
-    if y_proba.shape[1] == 3:
-        fpr = {}
-        tpr = {}
-        for i in range(3):
-            fpr[i], tpr[i], _ = roc_curve(y_test == i, y_proba[:, i])
-            plt.plot(fpr[i], tpr[i], label=f"{list(target_mapping.keys())[i]}")
-
-        plt.plot([0, 1], [0, 1], 'k--')
-        plt.xlabel("False Positive Rate")
-        plt.ylabel("True Positive Rate")
-        plt.title(f"ROC Curve - {model_name}")
-        plt.legend()
-        plt.grid()
-        plt.show()
-
-for name, model in trained_models.items():
-    evaluate_model(model, name)
-
-from sklearn.model_selection import learning_curve
-
-def plot_learning_curve(model, title):
-    train_sizes, train_scores, val_scores = learning_curve(
-        model, X_train_scaled, y_train, cv=5,
-        train_sizes=np.linspace(0.1, 1.0, 10), scoring='accuracy'
-    )
-    train_scores_mean = train_scores.mean(axis=1)
-    val_scores_mean = val_scores.mean(axis=1)
-
-    plt.plot(train_sizes, train_scores_mean, label='Training Accuracy')
-    plt.plot(train_sizes, val_scores_mean, label='Validation Accuracy')
-    plt.title(f'Learning Curve - {title}')
-    plt.xlabel("Training Size")
-    plt.ylabel("Accuracy")
-    plt.legend()
-    plt.grid()
-    plt.show()
-
-# Contoh untuk Random Forest
-#plot_learning_curve(trained_models['LogisticRegression'], "Logistic Regression")
-#plot_learning_curve(trained_models['KNN'], "KNN")
-plot_learning_curve(trained_models['DecisionTree'], "Decision Tree")
-#plot_learning_curve(trained_models['RandomForest'], "Random Forest")
-#plot_learning_curve(trained_models['SVM'], "SVM")
-plot_learning_curve(trained_models['XGBoost'], "XG Boost")
-
-from sklearn.metrics import accuracy_score
-
-# Hitung akurasi semua model
-accuracy_scores = {}
-for name, model in trained_models.items():
-    y_pred = model.predict(X_test_scaled)
-    acc = accuracy_score(y_test, y_pred)
-    accuracy_scores[name] = acc
-
-# Plot akurasi
-plt.figure(figsize=(10, 6))
-sns.barplot(x=list(accuracy_scores.keys()), y=list(accuracy_scores.values()))
-plt.ylim(0, 1)
-plt.ylabel("Accuracy Score")
-plt.title("Perbandingan Akurasi Model untuk Klasifikasi Epilepsi")
-plt.xticks(rotation=45)
-plt.grid(axis='y')
-plt.tight_layout()
-plt.show()
-
-import joblib
-
-# Simpan model terbaik (misalnya kita pilih Random Forest, atau bisa ganti ke model lain sesuai evaluasi)
-final_model = trained_models['DecisionTree']  # ganti sesuai model terbaikmu
+# Simpan model
 joblib.dump(final_model, 'ModelDiagnosaEpilepsi.pkl')
 print("Model saved as ModelDiagnosaEpilepsi.pkl")
 
 # ================ Diagnosa Diabetes ======================= #
 
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score, roc_curve
-from sklearn.pipeline import Pipeline
-
-# Models
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
-from xgboost import XGBClassifier
-
-# Utils
-from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay
-import warnings
-warnings.filterwarnings('ignore')
-
 # Load the dataset from GitHub
-url = 'https://raw.githubusercontent.com/BDCIMERIGit/MediFleks.AI.Demo/main/dummy_diabetes_8000.xlsx'  # Update this with the actual URL
+url = 'https://raw.githubusercontent.com/BDCIMERIGit/MediFleks.AI.Demo/main/dummy_diabetes_8000.xlsx'
 response = requests.get(url)
 with open('dummy_diabetes_8000.xlsx', 'wb') as f:
     f.write(response.content)
-    
+
 df = pd.read_excel("dummy_diabetes_8000.xlsx")
 
-# Target mapping
-target_mapping = {
-    0: "Normal",
-    1: "Diabetes"
-}
-
-# Split into features (X) and target (y)
-X = df.drop(columns=['Outcome', 'Pregnancies'])  # Assuming 'target' is the label column
+# Split into features and target
+X = df.drop(columns=['Outcome', 'Pregnancies'])
 y = df['Outcome']
 
 # Train-test split
@@ -214,116 +85,14 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-def train_model(model, params, model_name):
-    grid = GridSearchCV(model, params, cv=5, scoring='accuracy', n_jobs=-1)
-    grid.fit(X_train_scaled, y_train)
-    print(f"Best Parameters for {model_name}:", grid.best_params_)
-    return grid.best_estimator_
+# Train Decision Tree only
+model = DecisionTreeClassifier()
+params = {'max_depth': [3, 5, 10]}
+grid = GridSearchCV(model, params, cv=5, scoring='accuracy', n_jobs=-1)
+grid.fit(X_train_scaled, y_train)
+final_model = grid.best_estimator_
 
-models = {
-#    "LogisticRegression": (LogisticRegression(max_iter=1000), {'C': [0.1, 1, 10]}),
-#    "KNN": (KNeighborsClassifier(), {'n_neighbors': [3, 5, 7]}),
-    "DecisionTree": (DecisionTreeClassifier(), {'max_depth': [3, 5, 10]}),
-#    "RandomForest": (RandomForestClassifier(), {'n_estimators': [50, 100], 'max_depth': [5, 10]}),
-#    "SVM": (SVC(probability=True), {'C': [0.1, 1, 10], 'kernel': ['linear', 'rbf']}),
-    "XGBoost": (XGBClassifier(eval_metric='mlogloss'), {'n_estimators': [50, 100], 'max_depth': [3, 5]})
-}
-
-trained_models = {}
-for name, (model, params) in models.items():
-    print(f"\nTraining {name}...")
-    trained_models[name] = train_model(model, params, name)
-    
-def evaluate_model(model, model_name):
-    y_pred = model.predict(X_test_scaled)
-    y_proba = model.predict_proba(X_test_scaled)
-
-    # Fix: convert int -> label string
-    target_names = [target_mapping[i] for i in sorted(target_mapping.keys())]
-
-    print(f"\nClassification Report for {model_name}:\n")
-    print(classification_report(y_test, y_pred, target_names=target_names))
-
-    # Confusion Matrix
-    cm = confusion_matrix(y_test, y_pred)
-    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
-    disp.plot(cmap='Blues')
-    plt.title(f"Confusion Matrix - {model_name}")
-    plt.show()
-
-    # ROC Curve
-    if hasattr(model, "predict_proba"):
-        y_proba = model.predict_proba(X_test_scaled)
-        n_classes = y_proba.shape[1]
-        for i in range(n_classes):
-            if np.any(y_test == i):
-                fpr, tpr, _ = roc_curve(y_test == i, y_proba[:, i])
-                plt.plot(fpr, tpr, label=target_names[i])
-
-        plt.plot([0, 1], [0, 1], 'k--')
-        plt.xlabel("False Positive Rate")
-        plt.ylabel("True Positive Rate")
-        plt.title(f"ROC Curve - {model_name}")
-        plt.legend()
-        plt.grid()
-        plt.show()
-    else:
-        print(f"{model_name} does not support predict_proba(), skipping ROC Curve.")
-
-for name, model in trained_models.items():
-    evaluate_model(model, name)
-    
-from sklearn.model_selection import learning_curve
-
-def plot_learning_curve(model, title):
-    train_sizes, train_scores, val_scores = learning_curve(
-        model, X_train_scaled, y_train, cv=5,
-        train_sizes=np.linspace(0.1, 1.0, 10), scoring='accuracy'
-    )
-    train_scores_mean = train_scores.mean(axis=1)
-    val_scores_mean = val_scores.mean(axis=1)
-
-    plt.plot(train_sizes, train_scores_mean, label='Training Accuracy')
-    plt.plot(train_sizes, val_scores_mean, label='Validation Accuracy')
-    plt.title(f'Learning Curve - {title}')
-    plt.xlabel("Training Size")
-    plt.ylabel("Accuracy")
-    plt.legend()
-    plt.grid()
-    plt.show()
-
-# Contoh untuk Random Forest
-#plot_learning_curve(trained_models['LogisticRegression'], "Logistic Regression")
-#plot_learning_curve(trained_models['KNN'], "KNN")
-plot_learning_curve(trained_models['DecisionTree'], "Decision Tree")
-#plot_learning_curve(trained_models['RandomForest'], "Random Forest")
-#plot_learning_curve(trained_models['SVM'], "SVM")
-plot_learning_curve(trained_models['XGBoost'], "XG Boost")
-
-from sklearn.metrics import accuracy_score
-
-# Hitung akurasi semua model
-accuracy_scores = {}
-for name, model in trained_models.items():
-    y_pred = model.predict(X_test_scaled)
-    acc = accuracy_score(y_test, y_pred)
-    accuracy_scores[name] = acc
-
-# Plot akurasi
-plt.figure(figsize=(10, 6))
-sns.barplot(x=list(accuracy_scores.keys()), y=list(accuracy_scores.values()))
-plt.ylim(0, 1)
-plt.ylabel("Accuracy Score")
-plt.title("Perbandingan Akurasi Model untuk Klasifikasi Epilepsi")
-plt.xticks(rotation=45)
-plt.grid(axis='y')
-plt.tight_layout()
-plt.show()
-
-import joblib
-
-# Simpan model terbaik (misalnya kita pilih Random Forest, atau bisa ganti ke model lain sesuai evaluasi)
-final_model = trained_models['DecisionTree']  # ganti sesuai model terbaikmu
+# Simpan model
 joblib.dump(final_model, 'ModelDiagnosaDiabetes.pkl')
 print("Model saved as ModelDiagnosaDiabetes.pkl")
 
