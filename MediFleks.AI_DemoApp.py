@@ -37,7 +37,7 @@ df.info()
 
 # Encode label dan kategorikal
 le = LabelEncoder()
-for col in ['Jenis Kelamin', 'Jumlah Obat', 'Hasil EEG', 'Hasil MRI Kepala', 'Penurunan Frekuensi Kejang']:
+for col in ['Jenis_Kelamin', 'Jumlah_Obat', 'Hasil_EEG', 'Hasil_MRI_Kepala', 'Penurunan_Frekuensi_Kejang']:
     df[col] = le.fit_transform(df[col])
 
 # Target encoding
@@ -45,8 +45,8 @@ df['Jenis Epilepsi (Target)'] = le.fit_transform(df['Jenis Epilepsi (Target)'])
 target_mapping = dict(zip(le.classes_, le.transform(le.classes_)))
 
 # Split into features (X) and target (y)
-X = df.drop(columns=['Jenis Epilepsi (Target)'])  # Assuming 'target' is the label column
-y = df['Jenis Epilepsi (Target)']
+X = df.drop(columns=['Jenis_Epilepsi'])  # Assuming 'target' is the label column
+y = df['Jenis_Epilepsi']
 
 # Train-test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
