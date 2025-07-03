@@ -259,34 +259,60 @@ def login():
 
 def choose_disease():
     st.markdown("<h2 class='center-title'>Pilih Jenis Diagnosa</h2>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown("<div class='small-header'><h4>🧠 Epilepsi</h4></div>", unsafe_allow_html=True)
-        #st.subheader("🧠 Epilepsi")
-        if st.button("Start Epilepsi"):
-            st.session_state.page = "epilepsi"
-    with col2:
-        st.markdown("<div class='small-header'><h4>💉 Diabetes</h4></div>", unsafe_allow_html=True)
-        #st.subheader("💉 Diabetes")
-        if st.button("Start Diabetes"):
-            st.session_state.page = "diabetes"
-    with col3:
-        st.markdown("<div class='small-header'><h4>❤️ Serangan Jantung</h4></div>", unsafe_allow_html=True)
-        #st.subheader("❤️ Serangan Jantung")
-        if st.button("Start Jantung"):
-            st.session_state.page = "jantung"
 
-    col4, col5 = st.columns(2)
-    with col4:
-        st.markdown("<div class='small-header'><h4>🧠 Tumor Otak</h4></div>", unsafe_allow_html=True)
-        #st.subheader("🧠 Tumor Otak")
-        if st.button("Start Tumor Otak"):
-            st.warning("Work in progress...")
-    with col5:
-        st.markdown("<div class='small-header'><h4>🎗️ Kanker Payudara</h4></div>", unsafe_allow_html=True)
-        #st.subheader("🎗️ Kanker Payudara")
-        if st.button("Start Kanker Payudara"):
-            st.warning("Work in progress...")
+    st.markdown(
+        """
+        <style>
+        .center-options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .diagnosis-option {
+            text-align: center;
+        }
+        .diagnosis-option h4 {
+            font-size: 18px;
+            color: white;
+            margin-bottom: 5px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Begin wrapper
+    st.markdown('<div class="center-options">', unsafe_allow_html=True)
+
+    # Epilepsi
+    st.markdown('<div class="diagnosis-option"><h4>🧠 Epilepsi</h4></div>', unsafe_allow_html=True)
+    if st.button("Start Epilepsi"):
+        st.session_state.page = "epilepsi"
+
+    # Diabetes
+    st.markdown('<div class="diagnosis-option"><h4>💉 Diabetes</h4></div>', unsafe_allow_html=True)
+    if st.button("Start Diabetes"):
+        st.session_state.page = "diabetes"
+
+    # Serangan Jantung
+    st.markdown('<div class="diagnosis-option"><h4>❤️ Serangan Jantung</h4></div>', unsafe_allow_html=True)
+    if st.button("Start Jantung"):
+        st.session_state.page = "jantung"
+
+    # Tumor Otak
+    st.markdown('<div class="diagnosis-option"><h4>🧠 Tumor Otak</h4></div>', unsafe_allow_html=True)
+    if st.button("Start Tumor Otak"):
+        st.warning("Work in progress...")
+
+    # Kanker Payudara
+    st.markdown('<div class="diagnosis-option"><h4>🎗️ Kanker Payudara</h4></div>', unsafe_allow_html=True)
+    if st.button("Start Kanker Payudara"):
+        st.warning("Work in progress...")
+
+    # End wrapper
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def diagnose_epilepsi():
     st.title("⚡Diagnosa Epilepsi")
