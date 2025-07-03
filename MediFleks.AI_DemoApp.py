@@ -261,25 +261,30 @@ def choose_disease():
     st.markdown("<h2 class='center-title'>Pilih Jenis Diagnosa</h2>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.subheader("🧠 Epilepsi")
+        st.markdown("<div class='small-header'><h4>🧠 Epilepsi</h4></div>", unsafe_allow_html=True)
+        #st.subheader("🧠 Epilepsi")
         if st.button("Start Epilepsi"):
             st.session_state.page = "epilepsi"
     with col2:
-        st.subheader("💉 Diabetes")
+        st.markdown("<div class='small-header'><h4>💉 Diabetes</h4></div>", unsafe_allow_html=True)
+        #st.subheader("💉 Diabetes")
         if st.button("Start Diabetes"):
             st.session_state.page = "diabetes"
     with col3:
-        st.subheader("❤️ Serangan Jantung")
+        st.markdown("<div class='small-header'><h4>❤️ Serangan Jantung</h4></div>", unsafe_allow_html=True)
+        #st.subheader("❤️ Serangan Jantung")
         if st.button("Start Jantung"):
             st.session_state.page = "jantung"
 
     col4, col5 = st.columns(2)
     with col4:
-        st.subheader("🧠 Tumor Otak")
+        st.markdown("<div class='small-header'><h4>🧠 Tumor Otak</h4></div>", unsafe_allow_html=True)
+        #st.subheader("🧠 Tumor Otak")
         if st.button("Start Tumor Otak"):
             st.warning("Work in progress...")
     with col5:
-        st.subheader("🎗️ Kanker Payudara")
+        st.markdown("<div class='small-header'><h4>🎗️ Kanker Payudara</h4></div>", unsafe_allow_html=True)
+        #st.subheader("🎗️ Kanker Payudara")
         if st.button("Start Kanker Payudara"):
             st.warning("Work in progress...")
 
