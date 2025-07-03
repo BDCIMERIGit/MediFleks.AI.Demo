@@ -41,7 +41,7 @@ for col in ['Jenis_Kelamin', 'Jumlah_Obat', 'Hasil_EEG', 'Hasil_MRI_Kepala', 'Pe
     df[col] = le.fit_transform(df[col])
 
 # Target encoding
-df['Jenis Epilepsi (Target)'] = le.fit_transform(df['Jenis Epilepsi (Target)'])
+df['Jenis_Epilepsi'] = le.fit_transform(df['Jenis_Epilepsi'])
 target_mapping = dict(zip(le.classes_, le.transform(le.classes_)))
 
 # Split into features (X) and target (y)
