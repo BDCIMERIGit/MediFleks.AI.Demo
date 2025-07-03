@@ -201,10 +201,12 @@ st.markdown(
         margin-bottom: 30px;
     }
     .diagnosis-box {
-        background-color: #ffffff;
+        background-color: #00bf63;
+        text-align: center;
         padding: 15px 20px;
         border-radius: 12px;
         margin-top: 20px;
+        margin-bottom: 15px;
         box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
     }
     .diagnosis-box h3 {
