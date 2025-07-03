@@ -23,7 +23,16 @@ from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay
 import warnings
 warnings.filterwarnings('ignore')
 
-#df.info()
+# Load the dataset from GitHub
+url = 'https://github.com/BDCIMERIGit/MediFleks.AI.Demo/blob/main/dataset_epilepsi_anak.xlsx'  # Update this with the actual URL
+response = requests.get(url)
+with open('dataset_epilepsi_anak.xlsx', 'wb') as f:
+    f.write(response.content)
+
+# Load the dataset
+df = pd.read_excel("dataset_epilepsi_anak.xlsx")
+
+df.info()
 
 # Encode label dan kategorikal
 le = LabelEncoder()
@@ -178,8 +187,12 @@ from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay
 import warnings
 warnings.filterwarnings('ignore')
 
-# Load the dataset
-file_path = 'TestingHackathon'  # Update this if necessary
+# Load the dataset from GitHub
+url = 'https://github.com/BDCIMERIGit/MediFleks.AI.Demo/blob/main/dummy_diabetes_8000.xlsx'  # Update this with the actual URL
+response = requests.get(url)
+with open('dataset_epilepsi_anak.xlsx', 'wb') as f:
+    f.write(response.content)
+    
 df = pd.read_excel("dummy_diabetes_8000.xlsx")
 
 # Target mapping
@@ -328,8 +341,12 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import classification_report, confusion_matrix
 import joblib
 
-# Load the dataset
-file_path = 'TestingHackathon'  # Update this if necessary
+# Load the dataset from GitHub
+url = 'https://github.com/BDCIMERIGit/MediFleks.AI.Demo/blob/main/heart.csv'  # Update this with the actual URL
+response = requests.get(url)
+with open('dataset_epilepsi_anak.xlsx', 'wb') as f:
+    f.write(response.content)
+
 df = pd.read_csv("heart.csv")
 
 # Split into features (X) and target (y)
