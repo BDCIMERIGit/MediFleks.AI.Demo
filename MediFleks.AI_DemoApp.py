@@ -267,51 +267,52 @@ def choose_disease():
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
             margin-top: 30px;
         }
         .diagnosis-option {
+            background-color: #ffffff;
+            padding: 15px 30px;
+            border-radius: 12px;
+            width: 300px;
             text-align: center;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
         }
         .diagnosis-option h4 {
             font-size: 18px;
-            color: white;
-            margin-bottom: 5px;
+            color: #00bf63;
+            margin-bottom: 10px;
+        }
+        .diagnosis-option button {
+            width: 100%;
         }
         </style>
         """,
         unsafe_allow_html=True
     )
 
-    # Begin wrapper
+    # Start wrapper div
     st.markdown('<div class="center-options">', unsafe_allow_html=True)
 
-    # Epilepsi
-    st.markdown('<div class="diagnosis-option"><h4>🧠 Epilepsi</h4></div>', unsafe_allow_html=True)
-    if st.button("Start Epilepsi"):
-        st.session_state.page = "epilepsi"
+    # List of diagnosis options
+    options = [
+        ("🧠 Epilepsi", "epilepsi"),
+        ("💉 Diabetes", "diabetes"),
+        ("❤️ Serangan Jantung", "jantung"),
+        ("🧠 Tumor Otak", "tumor"),
+        ("🎗️ Kanker Payudara", "kanker")
+    ]
 
-    # Diabetes
-    st.markdown('<div class="diagnosis-option"><h4>💉 Diabetes</h4></div>', unsafe_allow_html=True)
-    if st.button("Start Diabetes"):
-        st.session_state.page = "diabetes"
+    for label, key in options:
+        st.markdown(f'<div class="diagnosis-option"><h4>{label}</h4>', unsafe_allow_html=True)
+        if st.button(f"Start {label}", key=key):
+            if key == "tumor" or key == "kanker":
+                st.warning("Work in progress...")
+            else:
+                st.session_state.page = key
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    # Serangan Jantung
-    st.markdown('<div class="diagnosis-option"><h4>❤️ Serangan Jantung</h4></div>', unsafe_allow_html=True)
-    if st.button("Start Jantung"):
-        st.session_state.page = "jantung"
-
-    # Tumor Otak
-    st.markdown('<div class="diagnosis-option"><h4>🧠 Tumor Otak</h4></div>', unsafe_allow_html=True)
-    if st.button("Start Tumor Otak"):
-        st.warning("Work in progress...")
-
-    # Kanker Payudara
-    st.markdown('<div class="diagnosis-option"><h4>🎗️ Kanker Payudara</h4></div>', unsafe_allow_html=True)
-    if st.button("Start Kanker Payudara"):
-        st.warning("Work in progress...")
-
-    # End wrapper
+    # End wrapper div
     st.markdown('</div>', unsafe_allow_html=True)
 
 def diagnose_epilepsi():
