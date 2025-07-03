@@ -213,7 +213,15 @@ def diagnose_epilepsi():
     penurunan = st.selectbox("Penurunan Frekuensi Kejang", ["Ya", "Tidak"])
 
     if st.button("Start Diagnosa"):
-        input_data = np.array([[jk, usia, obat, eeg, mri, penurunan]])
+        # Convert inputs to numeric
+        jk_encoded = label_mapping['Jenis_Kelamin'][jk]
+        obat_encoded = label_mapping['Jumlah_Obat'][obat]
+        eeg_encoded = label_mapping['Hasil_EEG'][eeg]
+        mri_encoded = label_mapping['Hasil_MRI_Kepala'][mri]
+        penurunan_encoded = label_mapping['Penurunan_Frekuensi_Kejang'][penurunan]
+
+        input_data = np.array([[jk_encoded, usia, obat_encoded, eeg_encoded, mri_encoded, penurunan_encoded]])
+
         prediction = model_epilepsi.predict(input_data)[0]
         st.success(f"Hasil Diagnosa: {prediction}")
 
@@ -225,7 +233,8 @@ def diagnose_epilepsi():
                     st.session_state.page = "choose_disease"
             with col2:
                 if st.button("Keluar dari aplikasi"):
-                    st.session_state.page = "login"
+                    st.session_state.page = "login")
+
 
 # --- Diabetes Diagnosis ---
 def diagnose_diabetes():
