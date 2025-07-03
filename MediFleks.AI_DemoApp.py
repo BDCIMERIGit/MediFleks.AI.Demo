@@ -278,6 +278,7 @@ def choose_disease():
             width: 280px;
         }
         .diagnosis-option h4 {
+            text-align: center;
             font-size: 18px;
             color: white;
             margin-bottom: 10px;
@@ -300,7 +301,7 @@ def choose_disease():
     # Helper
     def diagnosis_block(label, key, action):
         st.markdown(f'<div class="diagnosis-option"><h4>{label}</h4>', unsafe_allow_html=True)
-        if st.button(f"Start {label}", key=key):
+        if st.button(f"Mulai Diagnosa {label}", key=key):
             action()
         st.markdown('</div>', unsafe_allow_html=True)
 
