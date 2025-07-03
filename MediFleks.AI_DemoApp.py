@@ -273,8 +273,18 @@ def choose_disease():
         if st.button("Start Jantung"):
             st.session_state.page = "jantung"
 
+    col4, col5 = st.columns(2)
+    with col4:
+        st.subheader("🧠 Tumor Otak")
+        if st.button("Start Tumor Otak"):
+            st.warning("Work in progress...")
+    with col5:
+        st.subheader("🎗️ Kanker Payudara")
+        if st.button("Start Kanker Payudara"):
+            st.warning("Work in progress...")
+
 def diagnose_epilepsi():
-    st.title("⚡ Diagnosa Epilepsi")
+    st.title("⚡Diagnosa Epilepsi")
     #st.markdown("<h1 class='center-title'>⚡ Diagnosa Epilepsi</h1>", unsafe_allow_html=True)
     jk = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
     usia = st.number_input("Usia", 1, 100, 10)
@@ -311,7 +321,7 @@ def diagnose_epilepsi():
                 st.session_state.epilepsi_done = False
 
 def diagnose_diabetes():
-    st.title("💉 Diagnosa Diabetes")
+    st.title("💉Diagnosa Diabetes")
     #st.markdown("<h1 class='center-title'>💉 Diagnosa Diabetes</h1>", unsafe_allow_html=True)
     glucose = st.number_input("Glucose", 70, 200)
     bp = st.number_input("Blood Pressure", 55, 160)
@@ -345,7 +355,7 @@ def diagnose_diabetes():
                 st.session_state.diabetes_done = False
 
 def diagnose_jantung():
-    st.title("❤️ Diagnosa Serangan Jantung")
+    st.title("❤️Diagnosa Serangan Jantung")
     #st.markdown("<h1 class='center-title'>❤️ Diagnosa Serangan Jantung</h1>", unsafe_allow_html=True)
     age = st.number_input("Age", 1, 120, 50)
     sex = st.selectbox("Sex", [0, 1], format_func=lambda x: "Male" if x == 1 else "Female")
