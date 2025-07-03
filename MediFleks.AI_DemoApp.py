@@ -301,10 +301,14 @@ def choose_disease():
 
     # Helper
     def diagnosis_block(label, key, action):
-        st.markdown(f'<div class="diagnosis-option"><h4>{label}</h4>', unsafe_allow_html=True)
-        if st.button(f"Mulai Diagnosa", key=key):
+        st.markdown(f'''
+        <div class="diagnosis-box">
+            <h4>{label}</h4>
+        </div>
+        ''', unsafe_allow_html=True)
+
+        if st.button("Mulai Diagnosa", key=key):
             action()
-        st.markdown('</div>', unsafe_allow_html=True)
 
     # Epilepsi
     diagnosis_block("🧠 Epilepsi", "epilepsi", lambda: st.session_state.update({"page": "epilepsi"}))
