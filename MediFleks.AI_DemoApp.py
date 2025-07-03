@@ -258,23 +258,23 @@ def login():
             st.error("Username atau Password salah")
 
 def choose_disease():
-    st.title("Pilih Penyakit")
+    st.markdown("<h2 class='center-title'>Pilih Jenis Diagnosa</h2>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.subheader("Epilepsi")
+        st.subheader("🧠 Epilepsi")
         if st.button("Start Epilepsi"):
             st.session_state.page = "epilepsi"
     with col2:
-        st.subheader("Diabetes")
+        st.subheader("💉 Diabetes")
         if st.button("Start Diabetes"):
             st.session_state.page = "diabetes"
     with col3:
-        st.subheader("Serangan Jantung")
+        st.subheader("❤️ Serangan Jantung")
         if st.button("Start Jantung"):
             st.session_state.page = "jantung"
 
 def diagnose_epilepsi():
-    st.title("Form Diagnosa Epilepsi")
+    st.markdown("<h2 class='center-title'>⚡ Diagnosa Epilepsi</h2>", unsafe_allow_html=True)
     jk = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
     usia = st.number_input("Usia", 1, 100, 10)
     obat = st.selectbox("Jumlah Obat", [1, 2, 3])
@@ -310,7 +310,7 @@ def diagnose_epilepsi():
                 st.session_state.epilepsi_done = False
 
 def diagnose_diabetes():
-    st.title("Form Diagnosa Diabetes")
+    st.markdown("<h2 class='center-title'>💉 Diagnosa Diabetes</h2>", unsafe_allow_html=True)
     glucose = st.number_input("Glucose", 70, 200)
     bp = st.number_input("Blood Pressure", 55, 160)
     skin = st.number_input("Skin Thickness", 10, 50)
@@ -343,7 +343,7 @@ def diagnose_diabetes():
                 st.session_state.diabetes_done = False
 
 def diagnose_jantung():
-    st.title("Form Diagnosa Serangan Jantung")
+    st.markdown("<h2 class='center-title'>❤️ Diagnosa Serangan Jantung</h2>", unsafe_allow_html=True)
     age = st.number_input("Age", 1, 120, 50)
     sex = st.selectbox("Sex", [0, 1], format_func=lambda x: "Male" if x == 1 else "Female")
     cp = st.slider("Chest Pain Type (CP)", 0, 3, 1)
