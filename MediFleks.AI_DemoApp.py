@@ -191,7 +191,7 @@ warnings.filterwarnings('ignore')
 # Load the dataset from GitHub
 url = 'https://raw.githubusercontent.com/BDCIMERIGit/MediFleks.AI.Demo/main/dummy_diabetes_8000.xlsx'  # Update this with the actual URL
 response = requests.get(url)
-with open('dataset_epilepsi_anak.xlsx', 'wb') as f:
+with open('dummy_diabetes_8000.xlsx', 'wb') as f:
     f.write(response.content)
     
 df = pd.read_excel("dummy_diabetes_8000.xlsx")
@@ -345,7 +345,7 @@ import joblib
 # Load the dataset from GitHub
 url = 'https://raw.githubusercontent.com/BDCIMERIGit/MediFleks.AI.Demo/main/heart.csv'  # Update this with the actual URL
 response = requests.get(url)
-with open('dataset_epilepsi_anak.xlsx', 'wb') as f:
+with open('heart.csv', 'wb') as f:
     f.write(response.content)
 
 df = pd.read_csv("heart.csv")
