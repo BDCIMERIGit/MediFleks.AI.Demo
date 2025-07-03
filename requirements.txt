@@ -1,4 +1,5 @@
 joblib
 scikit-learn
 seaborn
+xgboost
 openpyxl
