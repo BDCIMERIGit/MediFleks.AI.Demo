@@ -233,7 +233,7 @@ def diagnose_epilepsi():
                     st.session_state.page = "choose_disease"
             with col2:
                 if st.button("Keluar dari aplikasi"):
-                    st.session_state.page = "login")
+                    st.session_state.page = "login"
 
 
 # --- Diabetes Diagnosis ---
