@@ -297,7 +297,7 @@ def choose_disease():
     # Wrapper start
     st.markdown('<div class="center-options">', unsafe_allow_html=True)
 
-    # Diagnosis Items
+    # Helper
     def diagnosis_block(label, key, action):
         st.markdown(f'<div class="diagnosis-option"><h4>{label}</h4>', unsafe_allow_html=True)
         if st.button(f"Start {label}", key=key):
