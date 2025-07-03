@@ -1,5 +1,4 @@
 joblib
 scikit-learn
 seaborn
-experimental_rerun
 openpyxl
