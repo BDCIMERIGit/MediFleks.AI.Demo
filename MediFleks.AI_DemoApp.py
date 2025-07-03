@@ -63,11 +63,11 @@ def train_model(model, params, model_name):
     return grid.best_estimator_
 
 models = {
-    "LogisticRegression": (LogisticRegression(max_iter=1000), {'C': [0.1, 1, 10]}),
-    "KNN": (KNeighborsClassifier(), {'n_neighbors': [3, 5, 7]}),
+    #"LogisticRegression": (LogisticRegression(max_iter=1000), {'C': [0.1, 1, 10]}),
+    #"KNN": (KNeighborsClassifier(), {'n_neighbors': [3, 5, 7]}),
     "DecisionTree": (DecisionTreeClassifier(), {'max_depth': [3, 5, 10]}),
-    "RandomForest": (RandomForestClassifier(), {'n_estimators': [50, 100], 'max_depth': [5, 10]}),
-    "SVM": (SVC(probability=True), {'C': [0.1, 1, 10], 'kernel': ['linear', 'rbf']}),
+    #"RandomForest": (RandomForestClassifier(), {'n_estimators': [50, 100], 'max_depth': [5, 10]}),
+    #"SVM": (SVC(probability=True), {'C': [0.1, 1, 10], 'kernel': ['linear', 'rbf']}),
     "XGBoost": (XGBClassifier(eval_metric='mlogloss'), {'n_estimators': [50, 100], 'max_depth': [3, 5]})
 }
 
@@ -129,11 +129,11 @@ def plot_learning_curve(model, title):
     plt.show()
 
 # Contoh untuk Random Forest
-plot_learning_curve(trained_models['LogisticRegression'], "Logistic Regression")
-plot_learning_curve(trained_models['KNN'], "KNN")
+#plot_learning_curve(trained_models['LogisticRegression'], "Logistic Regression")
+#plot_learning_curve(trained_models['KNN'], "KNN")
 plot_learning_curve(trained_models['DecisionTree'], "Decision Tree")
-plot_learning_curve(trained_models['RandomForest'], "Random Forest")
-plot_learning_curve(trained_models['SVM'], "SVM")
+#plot_learning_curve(trained_models['RandomForest'], "Random Forest")
+#plot_learning_curve(trained_models['SVM'], "SVM")
 plot_learning_curve(trained_models['XGBoost'], "XG Boost")
 
 from sklearn.metrics import accuracy_score
@@ -221,11 +221,11 @@ def train_model(model, params, model_name):
     return grid.best_estimator_
 
 models = {
-    "LogisticRegression": (LogisticRegression(max_iter=1000), {'C': [0.1, 1, 10]}),
-    "KNN": (KNeighborsClassifier(), {'n_neighbors': [3, 5, 7]}),
+#    "LogisticRegression": (LogisticRegression(max_iter=1000), {'C': [0.1, 1, 10]}),
+#    "KNN": (KNeighborsClassifier(), {'n_neighbors': [3, 5, 7]}),
     "DecisionTree": (DecisionTreeClassifier(), {'max_depth': [3, 5, 10]}),
-    "RandomForest": (RandomForestClassifier(), {'n_estimators': [50, 100], 'max_depth': [5, 10]}),
-    "SVM": (SVC(probability=True), {'C': [0.1, 1, 10], 'kernel': ['linear', 'rbf']}),
+#    "RandomForest": (RandomForestClassifier(), {'n_estimators': [50, 100], 'max_depth': [5, 10]}),
+#    "SVM": (SVC(probability=True), {'C': [0.1, 1, 10], 'kernel': ['linear', 'rbf']}),
     "XGBoost": (XGBClassifier(eval_metric='mlogloss'), {'n_estimators': [50, 100], 'max_depth': [3, 5]})
 }
 
@@ -293,11 +293,11 @@ def plot_learning_curve(model, title):
     plt.show()
 
 # Contoh untuk Random Forest
-plot_learning_curve(trained_models['LogisticRegression'], "Logistic Regression")
-plot_learning_curve(trained_models['KNN'], "KNN")
+#plot_learning_curve(trained_models['LogisticRegression'], "Logistic Regression")
+#plot_learning_curve(trained_models['KNN'], "KNN")
 plot_learning_curve(trained_models['DecisionTree'], "Decision Tree")
-plot_learning_curve(trained_models['RandomForest'], "Random Forest")
-plot_learning_curve(trained_models['SVM'], "SVM")
+#plot_learning_curve(trained_models['RandomForest'], "Random Forest")
+#plot_learning_curve(trained_models['SVM'], "SVM")
 plot_learning_curve(trained_models['XGBoost'], "XG Boost")
 
 from sklearn.metrics import accuracy_score
