@@ -158,6 +158,7 @@ print("Model saved as 'ModelDiagnosaSeranganJantung.pkl'")
 # ================ Aplikasi Streamlit ====================== #
 
 import streamlit as st
+from streamlit import experimental_rerun
 import numpy as np
 import joblib
 
@@ -286,7 +287,15 @@ def diagnose_epilepsi():
         st.markdown(f"<div class='diagnosis-box'><h3>Hasil Diagnosa: {hasil}</h3></div>", unsafe_allow_html=True)
         if st.button("Simpan hasil diagnosis"):
             st.success("Hasil diagnosis tersimpan")
-            st.session_state.page = "choose_disease"
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("Diagnosis penyakit lain"):
+                    st.session_state.page = "choose_disease"
+                    st.experimental_rerun()
+            with col2:
+                if st.button("Keluar dari aplikasi"):
+                    st.session_state.page = "login"
+                    st.experimental_rerun()
 
 def diagnose_diabetes():
     st.markdown("<h2 class='center-title'>💉 Diagnosa Diabetes</h2>", unsafe_allow_html=True)
@@ -304,7 +313,15 @@ def diagnose_diabetes():
         st.markdown(f"<div class='diagnosis-box'><h3>Hasil Diagnosa: {hasil}</h3></div>", unsafe_allow_html=True)
         if st.button("Simpan hasil diagnosis"):
             st.success("Hasil diagnosis tersimpan")
-            st.session_state.page = "choose_disease"
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("Diagnosis penyakit lain"):
+                    st.session_state.page = "choose_disease"
+                    st.experimental_rerun()
+            with col2:
+                if st.button("Keluar dari aplikasi"):
+                    st.session_state.page = "login"
+                    st.experimental_rerun()
 
 def diagnose_jantung():
     st.markdown("<h2 class='center-title'>❤️ Diagnosa Serangan Jantung</h2>", unsafe_allow_html=True)
@@ -329,7 +346,15 @@ def diagnose_jantung():
         st.markdown(f"<div class='diagnosis-box'><h3>Hasil Diagnosa: {hasil}</h3></div>", unsafe_allow_html=True)
         if st.button("Simpan hasil diagnosis"):
             st.success("Hasil diagnosis tersimpan")
-            st.session_state.page = "choose_disease"
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("Diagnosis penyakit lain"):
+                    st.session_state.page = "choose_disease"
+                    st.experimental_rerun()
+            with col2:
+                if st.button("Keluar dari aplikasi"):
+                    st.session_state.page = "login"
+                    st.experimental_rerun()
 
 if st.session_state.page == "home":
     login_page()
