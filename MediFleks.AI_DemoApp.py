@@ -158,7 +158,7 @@ print("Model saved as 'ModelDiagnosaSeranganJantung.pkl'")
 # ================ Aplikasi Streamlit ====================== #
 
 import streamlit as st
-from streamlit import experimental_rerun
+#from streamlit import experimental_rerun
 import numpy as np
 import joblib
 
@@ -291,11 +291,11 @@ def diagnose_epilepsi():
             with col1:
                 if st.button("Diagnosis penyakit lain"):
                     st.session_state.page = "choose_disease"
-                    st.experimental_rerun()
+                    st.rerun()
             with col2:
                 if st.button("Keluar dari aplikasi"):
                     st.session_state.page = "login"
-                    st.experimental_rerun()
+                    st.rerun()
 
 def diagnose_diabetes():
     st.markdown("<h2 class='center-title'>💉 Diagnosa Diabetes</h2>", unsafe_allow_html=True)
@@ -317,11 +317,11 @@ def diagnose_diabetes():
             with col1:
                 if st.button("Diagnosis penyakit lain"):
                     st.session_state.page = "choose_disease"
-                    st.experimental_rerun()
+                    st.rerun()
             with col2:
                 if st.button("Keluar dari aplikasi"):
                     st.session_state.page = "login"
-                    st.experimental_rerun()
+                    st.rerun()
 
 def diagnose_jantung():
     st.markdown("<h2 class='center-title'>❤️ Diagnosa Serangan Jantung</h2>", unsafe_allow_html=True)
@@ -350,11 +350,11 @@ def diagnose_jantung():
             with col1:
                 if st.button("Diagnosis penyakit lain"):
                     st.session_state.page = "choose_disease"
-                    st.experimental_rerun()
+                    st.rerun()
             with col2:
                 if st.button("Keluar dari aplikasi"):
                     st.session_state.page = "login"
-                    st.experimental_rerun()
+                    st.rerun()
 
 if st.session_state.page == "home":
     login_page()
