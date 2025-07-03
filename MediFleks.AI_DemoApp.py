@@ -201,7 +201,7 @@ st.markdown(
         margin-bottom: 30px;
     }
     .diagnosis-box {
-        background-color: #00bf63;
+        background-color: ##007a3d;
         text-align: center;
         padding: 15px 20px;
         border-radius: 12px;
