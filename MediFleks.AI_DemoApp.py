@@ -281,6 +281,10 @@ def choose_disease():
             font-size: 18px;
             color: white;
             margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
         .stButton > button {
             width: 100%;
