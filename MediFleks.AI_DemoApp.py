@@ -166,7 +166,6 @@ model_epilepsi = joblib.load("ModelDiagnosaEpilepsi.pkl")
 model_diabetes = joblib.load("ModelDiagnosaDiabetes.pkl")
 model_jantung = joblib.load("ModelDiagnosaSeranganJantung.pkl")
 
-# Mapping encoding epilepsi input
 label_mapping = {
     'Jenis_Kelamin': {'Laki-laki': 1, 'Perempuan': 0},
     'Jumlah_Obat': {1: 0, 2: 1, 3: 2},
@@ -183,15 +182,12 @@ label_mapping = {
     'Penurunan_Frekuensi_Kejang': {'Ya': 1, 'Tidak': 0}
 }
 
-# Mapping hasil prediksi
 epilepsi_labels = {
     0: "Epilepsi Fokal",
     1: "Epilepsi Umum",
     2: "Sindrom Epilepsi"
 }
 
-
-# --- Login Page ---
 def login_page():
     st.title("Selamat Datang di MediFleks.AI")
     if st.button("Start App"):
@@ -207,61 +203,58 @@ def login():
         else:
             st.error("Username atau Password salah")
 
-# --- Choose Disease Page ---
 def choose_disease():
-    st.title("Choose Disease")
+    st.title("Pilih Penyakit")
     col1, col2, col3 = st.columns(3)
-
     with col1:
         st.subheader("Epilepsi")
         if st.button("Start Epilepsi"):
             st.session_state.page = "epilepsi"
-
     with col2:
         st.subheader("Diabetes")
         if st.button("Start Diabetes"):
             st.session_state.page = "diabetes"
-
     with col3:
         st.subheader("Serangan Jantung")
         if st.button("Start Jantung"):
             st.session_state.page = "jantung"
 
-# --- Epilepsi Diagnosis ---
 def diagnose_epilepsi():
     st.title("Form Diagnosa Epilepsi")
     jk = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
-    usia = st.number_input("Usia", min_value=1, max_value=100, value=10)
+    usia = st.number_input("Usia", 1, 100, 10)
     obat = st.selectbox("Jumlah Obat", [1, 2, 3])
     eeg = st.selectbox("Hasil EEG", ["Normal", "Sindrom epilepsi", "Abnormal dengan gelombang epileptiform"])
     mri = st.selectbox("Hasil MRI Kepala", ["Normal", "Abnormal Epileptogenik", "Abnormal non-epileptogenik"])
     penurunan = st.selectbox("Penurunan Frekuensi Kejang", ["Ya", "Tidak"])
 
-    if st.button("Start Diagnosa"):
-        # Convert inputs to numeric
-        jk_encoded = label_mapping['Jenis_Kelamin'][jk]
-        obat_encoded = label_mapping['Jumlah_Obat'][obat]
-        eeg_encoded = label_mapping['Hasil_EEG'][eeg]
-        mri_encoded = label_mapping['Hasil_MRI_Kepala'][mri]
-        penurunan_encoded = label_mapping['Penurunan_Frekuensi_Kejang'][penurunan]
+    if "epilepsi_done" not in st.session_state:
+        st.session_state.epilepsi_done = False
 
-        input_data = np.array([[jk_encoded, usia, obat_encoded, eeg_encoded, mri_encoded, penurunan_encoded]])
-
-        prediction = model_epilepsi.predict(input_data)[0]
-        st.success(f"Hasil Diagnosa: {prediction}")
-
+    if not st.session_state.epilepsi_done:
+        if st.button("Start Diagnosa"):
+            data = [
+                label_mapping['Jenis_Kelamin'][jk], usia, label_mapping['Jumlah_Obat'][obat],
+                label_mapping['Hasil_EEG'][eeg], label_mapping['Hasil_MRI_Kepala'][mri],
+                label_mapping['Penurunan_Frekuensi_Kejang'][penurunan]
+            ]
+            pred = model_epilepsi.predict([data])[0]
+            hasil = epilepsi_labels.get(pred, "Tidak diketahui")
+            st.success(f"Hasil Diagnosa: {hasil}")
+            st.session_state.epilepsi_done = True
+    else:
         if st.button("Simpan hasil diagnosis"):
             st.success("Hasil diagnosis tersimpan")
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("Diagnosis penyakit lain"):
-                    st.session_state.page = "choose_disease"
-            with col2:
-                if st.button("Keluar dari aplikasi"):
-                    st.session_state.page = "login"
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Diagnosis penyakit lain"):
+                st.session_state.page = "choose_disease"
+                st.session_state.epilepsi_done = False
+        with col2:
+            if st.button("Keluar dari aplikasi"):
+                st.session_state.page = "login"
+                st.session_state.epilepsi_done = False
 
-
-# --- Diabetes Diagnosis ---
 def diagnose_diabetes():
     st.title("Form Diagnosa Diabetes")
     glucose = st.number_input("Glucose", 70, 200)
@@ -272,22 +265,29 @@ def diagnose_diabetes():
     dpf = st.number_input("Diabetes Pedigree Function", 0.1, 3.0)
     age = st.number_input("Umur", 20, 80)
 
-    if st.button("Start Diagnosa"):
-        input_data = np.array([[glucose, bp, skin, insulin, bmi, dpf, age]])
-        prediction = model_diabetes.predict(input_data)[0]
-        st.success(f"Hasil Diagnosa: {'Positif Diabetes' if prediction == 1 else 'Negatif Diabetes'}")
+    if "diabetes_done" not in st.session_state:
+        st.session_state.diabetes_done = False
 
+    if not st.session_state.diabetes_done:
+        if st.button("Start Diagnosa"):
+            data = [[glucose, bp, skin, insulin, bmi, dpf, age]]
+            pred = model_diabetes.predict(data)[0]
+            hasil = "Positif Diabetes" if pred == 1 else "Negatif Diabetes"
+            st.success(f"Hasil Diagnosa: {hasil}")
+            st.session_state.diabetes_done = True
+    else:
         if st.button("Simpan hasil diagnosis"):
             st.success("Hasil diagnosis tersimpan")
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("Diagnosis penyakit lain"):
-                    st.session_state.page = "choose_disease"
-            with col2:
-                if st.button("Keluar dari aplikasi"):
-                    st.session_state.page = "login"
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Diagnosis penyakit lain"):
+                st.session_state.page = "choose_disease"
+                st.session_state.diabetes_done = False
+        with col2:
+            if st.button("Keluar dari aplikasi"):
+                st.session_state.page = "login"
+                st.session_state.diabetes_done = False
 
-# --- Heart Disease Diagnosis ---
 def diagnose_jantung():
     st.title("Form Diagnosa Serangan Jantung")
     age = st.number_input("Age", 1, 120, 50)
@@ -304,23 +304,31 @@ def diagnose_jantung():
     ca = st.slider("Major Vessels Colored", 0, 3, 0)
     thal = st.slider("Thalassemia Type", 0, 2, 1)
 
-    if st.button("Start Diagnosa"):
-        input_data = np.array([[age, sex, cp, trestbps, chol, fbs, restecg, thalach,
-                                exang, oldpeak, slope, ca, thal]])
-        prediction = model_jantung.predict(input_data)[0]
-        st.success(f"Hasil Diagnosa: {'High Risk' if prediction == 1 else 'Low Risk'}")
+    if "jantung_done" not in st.session_state:
+        st.session_state.jantung_done = False
 
+    if not st.session_state.jantung_done:
+        if st.button("Start Diagnosa"):
+            data = [[age, sex, cp, trestbps, chol, fbs, restecg, thalach,
+                     exang, oldpeak, slope, ca, thal]]
+            pred = model_jantung.predict(data)[0]
+            hasil = "High Risk" if pred == 1 else "Low Risk"
+            st.success(f"Hasil Diagnosa: {hasil}")
+            st.session_state.jantung_done = True
+    else:
         if st.button("Simpan hasil diagnosis"):
             st.success("Hasil diagnosis tersimpan")
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("Diagnosis penyakit lain"):
-                    st.session_state.page = "choose_disease"
-            with col2:
-                if st.button("Keluar dari aplikasi"):
-                    st.session_state.page = "login"
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Diagnosis penyakit lain"):
+                st.session_state.page = "choose_disease"
+                st.session_state.jantung_done = False
+        with col2:
+            if st.button("Keluar dari aplikasi"):
+                st.session_state.page = "login"
+                st.session_state.jantung_done = False
 
-# --- Routing Halaman ---
+# ====================== Halaman Routing ======================= #
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
